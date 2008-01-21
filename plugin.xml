@@ -1,0 +1,42 @@
+<plugin>
+	<nom>
+		GalettOnuts
+	</nom>
+	<auteur>
+		[Mehdi Kabab->http://my.ziki.com/pioupioum]<br />
+		&copy; 2008 - Distribué sous licence GNU/GPL
+	</auteur>
+	<version>
+		0.1
+	</version>
+	<etat>
+		dev
+	</etat>
+	<description>
+		<multi>
+			[fr] Ce plugin permet de synchroniser les utilisateurs de [Galette->http://galette.tuxfamily.org/] avec Spip.
+
+De plus, si le plugin Accès Restreint...
+		</multi>
+	</description>
+	<lien>
+		Documentation à venir.
+	</lien>
+	<icon>
+		img_pack/galettonuts-128.png
+	</icon>
+	<prefix>
+		galettonuts
+	</prefix>
+	<install>
+		base/galettonuts_upgrade.php
+	</install>
+	<options>
+		galettonuts_options.php
+	</options>
+	<pipeline>
+		<nom>affiche_milieu</nom>
+		<inclure>galettonuts_pipelines.php</inclure>
+	</pipeline>
+	<chemin dir="./ecrire/" />
+</plugin>

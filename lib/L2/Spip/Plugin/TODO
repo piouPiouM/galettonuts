@@ -1,0 +1,15 @@
+Classes L2_Spip:
+- Permettre l'ajout de JS dans les squelettes
+- Compléter la documentation phpdoc
+- Ecrire une documentation
+
+    L2_Spip_Plugin_Metas:
+    - Gérer les arborescences. Ex: {config/foo}, {foo/bar}
+    
+    L2_Spip_Plugin_Abstract:
+    - Prendre en charge l'action ok en priorité. voir http://frederic.bouchery.free.fr/?2004/09/02/14-Savoir-Gerer-Un-Formulaire-Avec-Plusieurs-Boutons
+    - Gérer les étapes
+    
+    L2_Spip_Plugin_Debug:
+    - Hériter L2_Log pour permettre l'écriture de log dans ceux de spip, ou autre
+
