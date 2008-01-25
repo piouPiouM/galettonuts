@@ -17,9 +17,12 @@ function galettonuts_upgrade()
     {
         ecrire_meta('galettonuts_version', $version_base);
         ecrire_meta('galettonuts_config', serialize(array(
-            'adresse_db'=> 'localhost',
-            'prefix_db' => 'galette_',
-            'db_ok'     => false
+            'adresse_db'    => 'localhost',
+            'prefix_db'     => 'galette_',
+            'db_ok'         => false,
+            'activer_cron'  => true,
+            'heures'        => 0,
+            'minutes'       => 30
         )));
         ecrire_metas();
         

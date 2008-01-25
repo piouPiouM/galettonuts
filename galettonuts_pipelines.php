@@ -18,3 +18,20 @@ function galettonuts_affiche_milieu($flux)
     
     return $flux;
 }
+
+function galettonuts_taches_generales_cron($taches_generales)
+{
+    // Récupérer la périodicité de synchronisation dans 
+    // la meta galettonuts_config, autrement la définir à 24h.
+    $periodicite = 86400;
+    
+    if (isset($GLOBALS['meta']['galettonuts_synchro']))
+    {
+        $meta = unserialize($GLOBALS['meta']['galettonuts_synchro']);
+        if (array_key_exists('periodicite', $meta))
+            $periodicite = (int) $meta['periodicite'];
+    }
+    
+    $taches_generales['galettonuts_cron'] = $periodicite;
+    return $taches_generales;
+}

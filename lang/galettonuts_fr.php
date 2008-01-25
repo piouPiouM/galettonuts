@@ -18,11 +18,17 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
     'entree_db_login'   => 'Le login de connexion&nbsp;:',
     'entree_db_mdp'     => 'Le mot de passe de connexion&nbsp;:',
     'entree_db_prefix'  => 'Prefix&nbsp;:',
+    'entree_cron_utiliser'      => '&nbsp;Utiliser la synchronisation automatique',
+    'entree_cron_utiliser_non'  => '&nbsp;Ne pas utiliser la synchronisation automatique',
     'entree_lancer_synchro' => 'Lancer la synchronisation',
     
     // F
+    'frequence' => 'R&eacute;aliser la synchronisation toutes les ',
+    
     // G
     // H
+    'heures'    => '&nbsp;heure(s) ',
+    
     // I
     'icone_db_config'   => 'En attente d&#x27;un acc&egrave;s &agrave; la base de donn&eacute;es de Galette',
     'icone_db_erreur'   => '&Eacute;chec d&#x27;acc&egrave;s &agrave; la base de donn&eacute;es de Galette',
@@ -30,6 +36,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
     'info_admin'            => 'Liaison avec Galette',
     'info_bdd'              => 'Acc&egrave;s &agrave; la base de donn&eacute;es',
     'info_bdd_nom'          => 'Nom de la base de donn&eacute;es&nbsp;:',
+    'info_cron' => 'Synchronisation automatique',
     'installation_succes'   => 'Galettonuts a &eacute;t&eacute; install&eacute; avec succ&egrave;s.',
     'installation_echec'    => '&Eacute;chec de l&#x27;installation de Galettonuts.',
     
@@ -38,6 +45,8 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
     // K
     // L
     // M
+    'minutes'   => '&nbsp;minute(s)',
+    
     // N
     'ne_rien_faire' => 'Ne rien faire',
     
@@ -56,7 +65,8 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
     'texte_installation_succes' => 'Se rendre sur sa <a href="?exec=admin_galettonuts">page de configuration</a>.',
     'texte_info_admin'          => 'Cette page vous permet de g&eacute;rer la connexion du plugin avec Galette.',
     'texte_info_bdd'            => 'Renseignez ci-contre les informations de connexion &agrave; la BDD de Galette.<br /><br />Actuellement, MySQL est le seul type de base support&eacute;.',
-    'texte_synchro_manuelle'    => 'Lancer une synchronisation manuelle des utilisateurs de votre installation Galette vous permet de mettre &agrave; jour expressement les auteurs de Spip.<br /> Vous pouvez  y avoir recours lorsque vous ne souhaitez pas attendre que la synchronisation automaique se fasse.',
+    'texte_info_cron'   => 'La synchronisation automatique permet de tenir à jour la base utilisateurs de Spip sans aucune intervention de votre part. Pour en profiter, il vous suffit de l&#x27;activer puis de définir la fréquence à laquelle sera lancée la procédure.',
+    'texte_synchro_manuelle'    => 'Lancer une synchronisation manuelle des utilisateurs de votre installation Galette vous permet de mettre &agrave; jour expressement les auteurs de Spip.<br /> Vous pouvez  y avoir recours lorsque vous ne souhaitez pas attendre que la synchronisation automatique se fasse.',
     
     // U
     // V

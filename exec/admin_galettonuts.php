@@ -21,6 +21,8 @@ function exec_admin_galettonuts()
         include_spip('lib/L2/Spip/Plugin/Metas.class');
     $config   = new L2_Spip_Plugin_Metas('galettonuts_config');
     $contexte = $config->lire();
+    
+    $activer_cron = (array_key_exists('activer_cron', $contexte)) ? $contexte['activer_cron'] : true;
 
 // {{{ Traitement des données reçues
 
@@ -39,6 +41,35 @@ function exec_admin_galettonuts()
         if (false === (!in_array(null, $champs) || !in_array('', $champs)))
             $erreurs[] = _T('galettonuts:texte_erreur_1');
         
+        // Activer la synchronisation automatique ?
+        if ('oui' == _request('activer_cron'))
+            $activer_cron = true;
+        else
+            $activer_cron = false;
+        
+        if ($activer_cron)
+        {
+            $champs['heures']  = intval(_request('heures'));
+            $champs['minutes'] = intval(_request('minutes'));
+            
+            $synchro = new L2_Spip_Plugin_Metas('galettonuts_synchro');
+            $frequence = 3600 * $champs['heures'] + 60 * $champs['minutes'];
+            
+            spip_log('#### frequence :' . var_export($frequence, true));
+            
+            // On s'assure de bien supprimer le fichier de vérouillage
+            // pour forcer la resynchronisation tenant compte de la nouvelle
+            // configuration.
+            if ($frequence !== $synchro->lire('frequence'))
+            {
+                spip_log('#### frequence a mettre a jour');
+                @unlink(_DIR_TMP . 'galettonuts_cron.lock');
+                $synchro->ajouter(array('frequence' => $frequence), true);
+            }
+        }
+        $contexte['activer_cron'] = $activer_cron;
+        
+        // Prise en compte dans le contexte
         $contexte = array_merge($contexte, $champs);
         unset($champs);
 
@@ -185,9 +216,33 @@ function exec_admin_galettonuts()
 
     // Synchronisation automatique
     echo '<br />';
-    debut_cadre_relief('synchro-24.gif', false, '', _T('galettonuts:info_synchro_cron'));
-    echo '<p class="verdana2">', _T('galettonuts:texte_info_synchro_cron'), '</p>';
-    
+    debut_cadre_relief('synchro-24.gif', false, '', _T('galettonuts:info_cron'));
+    echo '<p class="verdana2">', _T('galettonuts:texte_info_cron'), '</p>';
+    echo '<p class="verdana2">',
+            '<label', ($activer_cron) ? ' style="font-weight:bold"' : '', '>',
+                '<input type="radio" name="activer_cron" value="oui" id="activer_cron_oui" tabindex="602" ',
+                ($activer_cron) ? ' checked="checked" ' : '',
+                'onclick="changeVisible(this.checked, \'config-cron\', \'block\', \'none\');"',
+                '/>',
+                _T('galettonuts:entree_cron_utiliser'),
+            '</label><br />',
+            '<label', (!$activer_cron) ? ' style="font-weight:bold"' : '', '>',
+                '<input type="radio" name="activer_cron" value="non" id="activer_cron_non" tabindex="604" ',
+                (!$activer_cron) ? ' checked="checked" ' : '',
+                'onclick="changeVisible(this.checked, \'config-cron\', \'none\', \'block\');"',
+                '/>',
+                _T('galettonuts:entree_cron_utiliser_non'),
+             '</label>',
+         '</p>';
+    echo '<div id="config-cron"', (!$activer_cron) ? ' style="display:none"' : '', '><hr />';
+    echo '<p class="verdana2">', _T('galettonuts:frequence'), '</p>';
+    echo '<p class="verdana2" style="text-align:center">',
+            '<input type="text" name="heures" value="', $contexte['heures'], '" id="cron_heures" size="2" maxlength="2" tabindex="606" class="fondl" style="text-align:right"/>',
+            '<label for="cron_heures" style="font-weight:bold;cursor:pointer">', _T('galettonuts:heures'), '</label>',
+            '<input type="text" name="minutes" value="', $contexte['minutes'], '" id="cron_minutes" size="2" maxlength="2" tabindex="606" class="fondl" style="text-align:right"/>',
+            '<label for="cron_minutes" style="font-weight:bold;cursor:pointer">', _T('galettonuts:minutes'), '</label>',
+         '</p>';
+    echo '</div>';
     echo '<div style="text-align:right;padding:0 2px;margin-top:.5em" id="buttons">',
          '<input type="submit" name="_galettonuts_ok" value="', _T('bouton_valider'), '" class="fondo" style="cursor:pointer" tabindex="660"/></div>';
     fin_cadre_relief();

@@ -38,5 +38,9 @@ De plus, si le plugin Accès Restreint...
 		<nom>affiche_milieu</nom>
 		<inclure>galettonuts_pipelines.php</inclure>
 	</pipeline>
+	<pipeline>
+		<nom>taches_generales_cron</nom>
+		<inclure>galettonuts_pipelines.php</inclure>
+	</pipeline>
 	<chemin dir="./ecrire/" />
 </plugin>
