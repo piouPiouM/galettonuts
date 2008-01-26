@@ -15,6 +15,11 @@ function galettonuts_upgrade()
     // Sinon s'il s'agit d'une nouvelle installation
     else if (version_compare($version_installee, '0.0', 'eq'))
     {
+        include_spip('base/galettonuts_tables');
+        include_spip('base/create');
+        include_spip('base/abstract_sql');
+        creer_base();
+        
         ecrire_meta('galettonuts_version', $version_base);
         ecrire_meta('galettonuts_config', serialize(array(
             'adresse_db'    => 'localhost',
@@ -53,6 +58,7 @@ function galettonuts_upgrade()
 
 function galettonuts_vider_tables()
 {
+    spip_query("DROP TABLE IF EXISTS spip_galettonuts");
     effacer_meta('galettonuts_version');
     effacer_meta('galettonuts_config');
     effacer_meta('galettonuts_synchro');
