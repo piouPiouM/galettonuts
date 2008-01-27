@@ -32,7 +32,7 @@ function galettonuts_synchroniser()
         return -2;
     }
     
-    $synchro    = new L2_Spip_Plugin_Metas('galettonuts_synchro');
+    $synchro = new L2_Spip_Plugin_Metas('galettonuts_synchro');
     
     // Première synchronisation ou il y a eu une modification de la table des utilisateurs
     // galette depuis la dernière synchronisation.
@@ -40,6 +40,7 @@ function galettonuts_synchroniser()
     {
         // Compteur d'utilisateurs traités
         $compteur = 0;
+        $maintenant = time();
         
         // Récupération des adhérents Galette
         $req = "SELECT `id_adh` AS `id`, `nom_adh` AS `nom`, `prenom_adh` AS `prenom`, `activite_adh` AS `actif`, `login_adh` AS `login`, `mdp_adh` AS `pass`, `email_adh` AS `email` FROM `" . $config->lire('prefix_db') . "adherents` WHERE 1;";
