@@ -12,42 +12,6 @@ function galettonuts_formulaire_synchro()
     else
         $visibilite = 'invisible';
     
-    // Traiter la demande de synchronisation manuelle
-    if (_request('_galettonuts_ok') && 'visible' == $visibilite)
-    {
-        include_spip('inc/galettonuts_fonctions');
-        $statut = (int) galettonuts_synchroniser();
-        
-        switch ($statut)
-        {
-            // Une erreur inconnue est survenue.
-            case 0:
-                $erreurs = "Une erreur inconnue est survenue.";
-                break;
-            
-            // Des erreurs sont survenues lors de la connexion à la BDD.
-            case -2:
-                $erreurs = "Des erreurs sont survenues lors de la connexion à la BDD.";
-                break;
-            
-            // La synchronisation a échouée.
-            case -1:
-                $erreurs = "La synchronisation a échouée.";
-                break;
-            
-            // La synchronisation est inutile.
-            case -10:
-                $erreurs = "La synchronisation est inutile.";
-                break;
-            
-            // La synchronisation s'est déroulée correctement,
-            // 
-            default:
-                redirige_par_entete(generer_url_ecrire('auteurs', 'galettonuts_synchro_ok=oui'));
-        }
-        
-    }
-    
     $return  = debut_cadre_couleur('synchro-24.gif', true, '', call_user_func('bouton_block_' . $visibilite, 'galettonuts_synchro') . _T('galettonuts:titre_formulaire_synchro'));
     $return .= call_user_func('debut_block_' . $visibilite, 'galettonuts_synchro');
     
@@ -76,15 +40,18 @@ function galettonuts_formulaire_synchro()
     }
     
     // Affichage des erreurs
-    if ($erreurs)
+    if ($erreur = _request('erreur'))
     {
         $return .= '<p class="verdana2">';
-        $return .= print_r($erreurs, 1);
+        $return .= urldecode($erreur);
         $return .= '</p>';
     }
     
+    $action = generer_action_auteur('galettonuts_cron_manuel', 'galettonuts-0.1&galettonuts_synchro_ok=oui', 'auteurs');
+    
     $return .= '<p class="verdana2">' . _T('galettonuts:texte_synchro_manuelle') . '</p>';
-    $return .= generer_url_post_ecrire('auteurs', 'galettonuts_synchro_ok=oui');
+    $return .= '<form action="' . $action . '" method="post>"';
+    $return .= form_hidden($action);
     
     // Bouton de validation
     $return .= '<div style="text-align:right;padding:0 2px;margin-top:.5em" id="buttons">';
