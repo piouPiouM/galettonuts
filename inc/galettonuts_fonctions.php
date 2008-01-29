@@ -211,6 +211,26 @@ function galettonuts_galette_db()
     return $link;
 }
 
+/**
+ * Retirer les auteurs des zones.
+ **/
+function galettonuts_dissocier_zones($zones)
+{
+    $auteurs = spip_query("SELECT `id_auteur` as `id` FROM `spip_galettonuts`;");
+    
+    if (!spip_num_rows($auteurs))
+        return;
+    
+    while($auteur = spip_fetch_array($auteurs))
+    {
+        $auteur = _q($auteur['id']);
+        foreach ($zones as $zone)
+        {
+            $zone = _q($zone);
+            spip_query("DELETE FROM `spip_zones_auteurs` WHERE `id_zone`=$zone AND `id_auteur`=$auteur;");
+        }
+    }
+}
 
 /**
  * Converti une date MySQL en Timestamp Unix.

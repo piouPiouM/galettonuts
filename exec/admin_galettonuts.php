@@ -111,6 +111,23 @@ function exec_admin_galettonuts()
             unset($link);
         }
         
+        // Interraction avec Accès Restreint
+        if (defined('_DIR_PLUGIN_ACCESRESTREINT'))
+        {
+            $zones = _request('zones');
+            if (is_array($zones) && 0 < count($zones))
+            {
+                $contexte['zones'] = $zones;
+            }
+            else
+            {
+                galettonuts_dissocier_zones($config->lire('zones'));
+                $config->supprimer(array('zones' => null));
+                unset($contexte['zones']);
+            }
+            unset($zones);
+        }
+        
         // Mémorisation de la configuration à la base de données Galette
         if (!count($erreurs))
             $config->ajouter($contexte, true);
@@ -258,17 +275,64 @@ function exec_admin_galettonuts()
          '<input type="submit" name="_galettonuts_ok" value="', _T('bouton_valider'), '" class="fondo" style="cursor:pointer" tabindex="660"/></div>';
     fin_cadre_relief();
 
-    // // Liaison inter-plugins
-    // if (defined('_DIR_PLUGIN_ACCESRESTREINT'))
-    // {
-    //     echo '<br />';
-    //     debut_cadre_relief(_DIR_PLUGIN_ACCESRESTREINT . 'img_pack/zones-acces-24.gif', false, '', _T('galettonuts:info_liaison_plugins'));
-    //     echo '<p class="verdana2">', _T('galettonuts:texte_info_liaison_plugins'), '</p>';
-    //     
-    //     echo '<div style="text-align:right;padding:0 2px;margin-top:.5em" id="buttons">',
-    //          '<input type="submit" name="_galettonuts_ok" value="', _T('bouton_valider'), '" class="fondo" style="cursor:pointer" tabindex="760"/></div>';
-    //     fin_cadre_relief();
-    // }
+    // Liaison avec le plugin Accès restreint
+    if (defined('_DIR_PLUGIN_ACCESRESTREINT'))
+    {
+        $zones = spip_query("SELECT `id_zone`, `titre`, `descriptif` FROM `spip_zones` WHERE 1;");
+        if (spip_num_rows($zones))
+        {
+            global $couleur_foncee;
+            $i = 0;
+            $zone['num']        = _T('accesrestreint:colonne_id');
+            $zone['titre']      = _T('accesrestreint:titre');
+            $zone['descriptif'] = _T('accesrestreint:descriptif');
+            $tabindex = 700;
+            $tab_zones = <<<HTML
+<table class="arial2" border="0" cellpadding="2" cellspacing="0" style="width:100%;border:1px solid #AAA;">
+    <thead>
+        <tr style="background-color:$couleur_foncee;color:#fff;font-weight=bold">
+            <th scope="col" style="text-align:left;padding-left:5px;padding-right:5px" width="40">{$zone['num']}</th>
+            <th scope="col" style="text-align:left;border-left:1px inset #fff;padding-left:5px;padding-right:5px">{$zone['titre']}</th>
+            <th scope="col" style="text-align:left;border-left:1px inset #fff;padding-left:5px;padding-right:5px">{$zone['descriptif']}</th>
+            <th scope="col" style="text-align:center;border-left:1px inset #fff;padding-left:5px;padding-right:5px" width="16">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+HTML;
+
+            while ($zone = spip_fetch_array($zones))
+            {
+                ++$tabindex;
+                $bgcolor = alterner(++$i, '#FEFEFE', '#EEE');
+                if (array_key_exists('zones', $contexte))
+                    $checked = (in_array($zone['id_zone'], $contexte['zones'])) ? ' checked="checked"' : '';
+                else
+                    $checked = '';
+                $tab_zones .= <<<HTML
+        <tr style="background-color:$bgcolor">
+            <td style="text-align:left;padding-left:5px;padding-right:5px">{$zone['id_zone']}</td>
+            <td style="text-align:left;padding-left:5px;padding-right:5px">{$zone['titre']}</td>
+            <td style="text-align:left;padding-left:5px;padding-right:5px">{$zone['descriptif']}</td>
+            <td style="text-align:center">
+                <input type="checkbox" name="zones[]" value="{$zone['id_zone']}" class="fondl" tabindex="$tabindex"$checked />
+            </td>
+        </tr>
+HTML;
+
+            }
+            
+            $tab_zones .= '</tbody></table>';
+            
+            echo '<br />';
+            debut_cadre_relief(_DIR_PLUGIN_ACCESRESTREINT . 'img_pack/zones-acces-24.gif', false, '', _T('galettonuts:info_liaison_plugins'));
+            echo '<p class="verdana2">', _T('galettonuts:texte_info_liaison_plugins'), '</p>';
+            echo $tab_zones;
+            echo '<div style="text-align:right;padding:0 2px;margin-top:.5em" id="buttons">',
+                 '<input type="submit" name="_galettonuts_ok" value="', _T('bouton_valider'), '" class="fondo" style="cursor:pointer" tabindex="760"/></div>';
+            fin_cadre_relief();
+            
+        }
+    }
     
     echo '</form>';
 
