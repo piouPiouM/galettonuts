@@ -27,7 +27,10 @@ function galettonuts_upgrade()
             'db_ok'         => false,
             'activer_cron'  => true,
             'heures'        => 0,
-            'minutes'       => 30
+            'minutes'       => 10
+        )));
+        ecrire_meta('galettonuts_synchro', serialize(array(
+            'frequence'     => 600
         )));
         ecrire_metas();
         
@@ -58,11 +61,20 @@ function galettonuts_upgrade()
 
 function galettonuts_vider_tables()
 {
+    $res = spip_query("SELECT `id_auteur` FROM `spip_galettonuts` WHERE 1;");
+    while ($row = @mysql_fetch_array($res))
+    {
+        spip_query("DELETE FROM `spip_auteurs` WHERE `spip_auteurs`.`id_auteur`={$row['id_auteur']};");
+    }
     spip_query("DROP TABLE IF EXISTS spip_galettonuts");
     effacer_meta('galettonuts_version');
     effacer_meta('galettonuts_config');
     effacer_meta('galettonuts_synchro');
     ecrire_metas();
+    if (file_exists(_DIR_TMP . 'galettonuts_cron.lock'))
+        unlink(_DIR_TMP . 'galettonuts_cron.lock');
+    if (file_exists(_DIR_TMP . 'galettonuts_cron.php'))
+        unlink(_DIR_TMP . 'galettonuts_cron.php');
 }
 
 function galettonuts_install($action)

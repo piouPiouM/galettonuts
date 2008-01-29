@@ -34,9 +34,14 @@ function galettonuts_synchroniser()
     
     $synchro = new L2_Spip_Plugin_Metas('galettonuts_synchro');
     
+    // La synchronisation est inutile.
+    if (!is_null($synchro->lire('maj')) && galettonuts_a_jour($synchro->lire('maj'), $config->lire('prefix_db'), $link))
+    {
+        return -10;
+    }
     // Première synchronisation ou il y a eu une modification de la table des utilisateurs
     // galette depuis la dernière synchronisation.
-    if (is_null($synchro->lire('maj')) || !galettonuts_a_jour($synchro->lire('maj'), $config->lire('prefix_db'), $link))
+    else
     {
         // Compteur d'utilisateurs traités
         $compteur = 0;
@@ -117,12 +122,6 @@ function galettonuts_synchroniser()
         $synchro->ajouter(array('maj' => $maintenant), true);
         
         return $compteur;
-    }
-    
-    // La synchronisation est inutile.
-    else
-    {
-        return -10;
     }
     
 }

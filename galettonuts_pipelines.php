@@ -21,17 +21,15 @@ function galettonuts_affiche_milieu($flux)
 
 function galettonuts_taches_generales_cron($taches_generales)
 {
-    // Récupérer la périodicité de synchronisation dans 
-    // la meta galettonuts_config, autrement la définir à 24h.
-    $periodicite = 86400;
-    
-    if (isset($GLOBALS['meta']['galettonuts_synchro']))
+    // Par défaut le plugin réalise la synchro toutes les 10 minutes.
+    if (!defined('_GALETTONUTS_DELAIS_CRON'))
     {
-        $meta = unserialize($GLOBALS['meta']['galettonuts_synchro']);
-        if (array_key_exists('periodicite', $meta))
-            $periodicite = (int) $meta['periodicite'];
+        if (file_exists(_DIR_TMP . 'galettonuts_cron.php'))
+            include _DIR_TMP . 'galettonuts_cron.php';
+        else
+            define('_GALETTONUTS_DELAIS_CRON', 600);
     }
     
-    $taches_generales['galettonuts_cron'] = $periodicite;
+    $taches_generales['galettonuts_cron'] = _GALETTONUTS_DELAIS_CRON;
     return $taches_generales;
 }

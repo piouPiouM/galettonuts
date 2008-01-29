@@ -16,7 +16,10 @@ function galettonuts_formulaire_synchro()
     $return .= call_user_func('debut_block_' . $visibilite, 'galettonuts_synchro');
     
     // Le plugin n'a pas encore été configuré
-    if (!isset($GLOBALS['meta']['galettonuts_config']) || 'a:0:{}' === (string) $GLOBALS['meta']['galettonuts_config'])
+    if (!class_exists('L2_Spip_Plugin_Metas'))
+        include_spip('lib/L2/Spip/Plugin/Metas.class');
+    $config = new L2_Spip_Plugin_Metas('galettonuts_config');
+    if (!$config || !$config->lire('db_ok'))
     {
         $return .= debut_cadre_relief('', true);
         $return .= http_img_pack('warning.gif', _T('info_avertissement'), 'style="width:48px;height:48px;float:right;margin:5px;"');
@@ -26,8 +29,11 @@ function galettonuts_formulaire_synchro()
         $return .= _T('galettonuts:configuration_lien', array('url' => generer_url_ecrire('admin_galettonuts')));
         $return .= '</p>';
         $return .= fin_cadre_relief(true);
+        $return .= fin_block();
+        $return .= fin_cadre_couleur(true);
         return $return;
     }
+    unset($config);
     
     // Affichage des erreurs
     if ($statut = (int) _request('code_retour'))
@@ -91,8 +97,6 @@ function galettonuts_formulaire_synchro()
     $return .= form_hidden($action);
     
     // Dernière mise à jour
-    if (!class_exists('L2_Spip_Plugin_Metas'))
-        include_spip('lib/L2/Spip/Plugin/Metas.class');
     $synchro = new L2_Spip_Plugin_Metas('galettonuts_synchro');
     
     if ('' != $maj = $synchro->lire('maj'))

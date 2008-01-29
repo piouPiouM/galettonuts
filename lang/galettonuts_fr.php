@@ -9,7 +9,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
     'bouton_synchroniser' => 'Synchroniser',
     
     // C
-    'configuration_lien'      => 'Rendez-vous sur sa <a href="@url@>page de configuration</a> afin d&#x27;y renseigner les param&egrave;tres d&#x27;acc&egrave;s &agrave; Galette.',
+    'configuration_lien'      => 'Rendez-vous sur sa <a href="@url@">page de configuration</a> afin d&#x27;y renseigner les param&egrave;tres d&#x27;acc&egrave;s &agrave; Galette.',
     'configuration_manquante' => 'Le plugin Galettonuts n&#x27;a pas encore &eacute;t&eacute; configur&eacute; !',
     
     // D

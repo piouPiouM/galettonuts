@@ -16,6 +16,8 @@ function exec_admin_galettonuts()
     $icone_src   = 'config-168.png';
     $icone_title = _T('galettonuts:icone_db_config');
 
+    include_spip('inc/galettonuts_fonctions');
+
     // Lecture de la configuration
     if (!class_exists('L2_Spip_Plugin_Metas'))
         include_spip('lib/L2/Spip/Plugin/Metas.class');
@@ -55,17 +57,23 @@ function exec_admin_galettonuts()
             $synchro = new L2_Spip_Plugin_Metas('galettonuts_synchro');
             $frequence = 3600 * $champs['heures'] + 60 * $champs['minutes'];
             
-            spip_log('#### frequence :' . var_export($frequence, true));
-            
+            if ($frequence !== $synchro->lire('frequence'))
+            {
+                $synchro->ajouter(array('frequence' => $frequence), true);
+                $fichier = '<?php define(\'_GALETTONUTS_DELAIS_CRON\', ' . $frequence . '); ?>';
+                ecrire_fichier(_DIR_TMP . 'galettonuts_cron.php', $fichier, true);
+                unset($fichier);
+            }
+        }
+        else
+        {
             // On s'assure de bien supprimer le fichier de vérouillage
             // pour forcer la resynchronisation tenant compte de la nouvelle
             // configuration.
-            if ($frequence !== $synchro->lire('frequence'))
-            {
-                spip_log('#### frequence a mettre a jour');
-                @unlink(_DIR_TMP . 'galettonuts_cron.lock');
-                $synchro->ajouter(array('frequence' => $frequence), true);
-            }
+            if (file_exists(_DIR_TMP . 'galettonuts_cron.lock'))
+                unlink(_DIR_TMP . 'galettonuts_cron.lock');
+            if (file_exists(_DIR_TMP . 'galettonuts_cron.php'))
+                unlink(_DIR_TMP . 'galettonuts_cron.php');
         }
         $contexte['activer_cron'] = $activer_cron;
         
@@ -94,6 +102,7 @@ function exec_admin_galettonuts()
             {
                 $icone_src   = 'ok-168.png';
                 $icone_title = _T('galettonuts:icone_db_ok');
+                $contexte['db_ok'] = true;
             }
             
             if (0 < $link)
@@ -117,11 +126,13 @@ function exec_admin_galettonuts()
         {
             $icone_src   = 'error-168.png';
             $icone_title = _T('galettonuts:icone_db_erreur');
+            $config->ajouter(array('db_ok' => false));
         }
         else
         {
             $icone_src   = 'ok-168.png';
             $icone_title = _T('galettonuts:icone_db_ok');
+            $config->ajouter(array('db_ok' => true));
             mysql_close($link);
             unset($link);
         }
