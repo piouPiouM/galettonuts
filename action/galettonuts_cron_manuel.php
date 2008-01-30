@@ -1,4 +1,21 @@
 <?php
+/**
+ * Synchronisation manuelle.
+ *
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This source file is subject to version 2.0 of the GPL license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.gnu.org/licenses/gpl2.html.
+ * You should have received a copy of the GNU General Public License
+ * along with Galettonuts (LICENCE.txt); if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @package    Galettonuts
+ * @author     Mehdi Kabab
+ * @license    http://www.gnu.org/licenses/gpl2.html  GPL Licence 2.0
+ */
+
 if (!defined('_ECRIRE_INC_VERSION')) return;
 
 function action_galettonuts_cron_manuel_dist()
