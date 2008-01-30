@@ -3,8 +3,7 @@
 		GalettOnuts
 	</nom>
 	<auteur>
-		[Mehdi Kabab->http://my.ziki.com/pioupioum]<br />
-		&copy; 2008 - Distribué sous licence GNU/GPL
+		[Mehdi Kabab->http://my.ziki.com/pioupioum] &copy; 2008 - Distribué sous licence GNU/GPL
 	</auteur>
 	<version>
 		0.1
@@ -14,13 +13,16 @@
 	</etat>
 	<description>
 		<multi>
-			[fr] Ce plugin permet de synchroniser les utilisateurs de [Galette->http://galette.tuxfamily.org/] avec Spip.
+			[fr] Ce plugin permet de synchroniser les utilisateurs de [Galette->http://galette.tuxfamily.org/] avec Spip. Tout nouvel adhérent ou toute modification d'un adhérent de votre installation Galette sont répercutés dans Spip.<br />
+Aussi, si le plugin <em>Accès Restreint</em> est actif, le plugin vous proposera de lier automatiquement les adhérents à une, voire plusieurs zones.
 
-De plus, si le plugin Accès Restreint...
+[Acc&egrave;s &agrave; la configuration->.?exec=admin_galettonuts]
+
+<strong>Important&nbsp;:</strong> La déinstallation du plugin entraine la suppression pure et simple des auteurs qu'il aurait créé.
 		</multi>
 	</description>
 	<lien>
-		Documentation à venir.
+		Documentation à venir
 	</lien>
 	<icon>
 		img_pack/galettonuts-128.png
