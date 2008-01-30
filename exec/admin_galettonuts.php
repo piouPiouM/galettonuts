@@ -131,6 +131,10 @@ function exec_admin_galettonuts()
         // Mémorisation de la configuration à la base de données Galette
         if (!count($erreurs))
             $config->ajouter($contexte, true);
+        
+        // Lancer une synchronisation
+        if (0 == count($erreurs))
+            galettonuts_synchroniser();
     }
 
 // }}}
