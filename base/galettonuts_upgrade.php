@@ -66,6 +66,18 @@ function galettonuts_vider_tables()
     {
         spip_query("DELETE FROM `spip_auteurs` WHERE `spip_auteurs`.`id_auteur`={$row['id_auteur']};");
     }
+    
+    if (isset($GLOBALS['meta']['galettonuts_config']))
+    {
+        $config = unserialize($GLOBALS['meta']['galettonuts_config']);
+        if (isset($config['zones']))
+        {
+            include dirname(__FILE__) . '/../inc/galettonuts_fonctions.php';
+            galettonuts_dissocier_zones($config['zones']);
+        }
+        unset($config);
+    }
+    
     spip_query("DROP TABLE IF EXISTS spip_galettonuts");
     effacer_meta('galettonuts_version');
     effacer_meta('galettonuts_config');
