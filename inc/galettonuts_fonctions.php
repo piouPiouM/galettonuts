@@ -39,6 +39,7 @@ function galettonuts_synchroniser()
     {
         return -10;
     }
+    
     // Première synchronisation ou il y a eu une modification de la table des utilisateurs
     // galette depuis la dernière synchronisation.
     else
@@ -52,11 +53,13 @@ function galettonuts_synchroniser()
         $maintenant = time();
         
         // Récupération des adhérents Galette
-        $req = "SELECT `id_adh` AS `id`, `nom_adh` AS `nom`, `prenom_adh` AS `prenom`, `activite_adh` AS `actif`, `login_adh` AS `login`, `mdp_adh` AS `pass`, `email_adh` AS `email` FROM `" . $config->lire('prefix_db') . "adherents` WHERE 1;";
-        $res = mysql_query($req ,$link);
+        $req = "SELECT `id_adh` AS `id`, `nom_adh` AS `nom`, `prenom_adh` AS `prenom`, `activite_adh` AS `actif`, "
+             . "`login_adh` AS `login`, `mdp_adh` AS `pass`, `email_adh` AS `email` "
+             . "FROM `" . $config->lire('prefix_db') . "adherents` WHERE 1;";
+        $res = @mysql_query($req ,$link);
         
         // Pour chaque adhérent de galette
-        while ($adh = mysql_fetch_assoc($res))
+        while ($adh = @mysql_fetch_assoc($res))
         {
             include_spip('inc/acces');
             include_spip('inc/charsets');
@@ -199,7 +202,9 @@ function galettonuts_galette_db()
             break;
         
         default:
-            trigger_error('Nombre d\'arguments incorrect pour la fonction <strong>galettonuts_galette_db()</strong>.' , E_USER_ERROR);
+            trigger_error('Nombre d\'arguments incorrect pour la fonction <strong>galettonuts_galette_db()</strong>.' ,
+                E_USER_ERROR
+            );
             return 0;
             break;
     }
@@ -208,22 +213,22 @@ function galettonuts_galette_db()
     // faut en créer une.
     if (is_null($link))
     {
-        $link = mysql_connect($adresse_db, $login_db, $pass_db, true);
+        $link = @mysql_connect($adresse_db, $login_db, $pass_db, true);
         
         if (!$link)
         {
             return -1;
         }
-        else if (0 != mysql_errno($link))
+        else if (0 != @mysql_errno($link))
         {
-            mysql_close($link);
+            @mysql_close($link);
             return -1;
         }
     }
     
     if (!is_null($choix_db))
     {
-        if (!mysql_select_db($choix_db, $link))
+        if (!@mysql_select_db($choix_db, $link))
             return -2;
     }
     
@@ -241,8 +246,6 @@ function galettonuts_galette_db()
  **/
 function galettonuts_associer_zones($ids)
 {
-    spip_log('galettonuts_associer_zones() avec $ids = ');
-    spip_log(var_export($ids, true));
     foreach ($ids as $id_auteur => $zones)
     {
         $id_auteur = (int) $id_auteur;
