@@ -328,8 +328,14 @@ HTML;
             $tab_zones .= '</tbody></table>';
             
             echo '<br />';
-            debut_cadre_relief(_DIR_PLUGIN_ACCESRESTREINT . 'img_pack/zones-acces-24.gif', false, '', _T('galettonuts:info_liaison_plugins'));
-            echo '<p class="verdana2">', _T('galettonuts:texte_info_liaison_plugins'), '</p>';
+            debut_cadre_relief(
+                _DIR_PLUGIN_ACCESRESTREINT . 'img_pack/zones-acces-24.gif',
+                false,
+                '',
+                _T('galettonuts:info_liaison_access_restreint')
+            );
+            echo '<p class="verdana2">', _T('galettonuts:texte_liaison_access_restreint_1'), '</p>';
+            echo '<p class="verdana2">', _T('galettonuts:texte_liaison_access_restreint_2'), '</p>';
             echo $tab_zones;
             echo '<div style="text-align:right;padding:0 2px;margin-top:.5em" id="buttons">',
                  '<input type="submit" name="_galettonuts_ok" value="', _T('bouton_valider'), '" class="fondo" style="cursor:pointer" tabindex="760"/></div>';
