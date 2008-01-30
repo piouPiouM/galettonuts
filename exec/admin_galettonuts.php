@@ -54,7 +54,7 @@ function exec_admin_galettonuts()
             $champs['heures']  = intval(_request('heures'));
             $champs['minutes'] = intval(_request('minutes'));
             
-            $synchro = new L2_Spip_Plugin_Metas('galettonuts_synchro');
+            $synchro   = new L2_Spip_Plugin_Metas('galettonuts_synchro');
             $frequence = 3600 * $champs['heures'] + 60 * $champs['minutes'];
             
             if ($frequence !== $synchro->lire('frequence'))
@@ -94,14 +94,14 @@ function exec_admin_galettonuts()
             }
             else if (-2 === galettonuts_galette_db($contexte['choix_db'], $link))
             {
-                $erreurs[] = _T('galettonuts:avis_connexion_echec_2');
+                $erreurs[]   = _T('galettonuts:avis_connexion_echec_2');
                 $icone_src   = 'error-168.png';
                 $icone_title = _T('galettonuts:icone_db_erreur');
             }
             else
             {
-                $icone_src   = 'ok-168.png';
-                $icone_title = _T('galettonuts:icone_db_ok');
+                $icone_src         = 'ok-168.png';
+                $icone_title       = _T('galettonuts:icone_db_ok');
                 $contexte['db_ok'] = true;
             }
             

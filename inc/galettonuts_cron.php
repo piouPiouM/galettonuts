@@ -3,12 +3,10 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
 
 function cron_galettonuts_cron($t)
 {
-    spip_log('$time = ' . var_export($t, true));
-    
     if (!class_exists('L2_Spip_Plugin_Metas'))
         include_spip('lib/L2/Spip/Plugin/Metas.class');
     
-    $config  = new L2_Spip_Plugin_Metas('galettonuts_config');
+    $config = new L2_Spip_Plugin_Metas('galettonuts_config');
     
     // La synchronisation automatique est désactivée
     if (!$config->lire('activer_cron'))

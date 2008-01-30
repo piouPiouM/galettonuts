@@ -11,5 +11,8 @@ function action_galettonuts_cron_manuel_dist()
     
     include_spip('inc/galettonuts_fonctions');
     $code = (int) galettonuts_synchroniser();
-    redirige_par_entete(generer_url_ecrire(_request('redirect'), 'galettonuts_synchro_ok=oui&code_retour=' . $code . $voir_statut, true));
+    redirige_par_entete(generer_url_ecrire(
+        _request('redirect'),
+        'galettonuts_synchro_ok=oui&code_retour=' . $code . $voir_statut, true)
+    );
 }
