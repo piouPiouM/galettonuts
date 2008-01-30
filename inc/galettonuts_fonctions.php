@@ -45,6 +45,10 @@ function galettonuts_synchroniser()
     {
         // Compteur d'utilisateurs traités
         $compteur = 0;
+        
+        // Tableau associatif zones/auteurs
+        $ids = array();
+        
         $maintenant = time();
         
         // Récupération des adhérents Galette
@@ -116,10 +120,25 @@ function galettonuts_synchroniser()
             // Hop, un utilisateur de synchronisé en plus
             ++$compteur;
             
+            // Dans le cas où le plugin Accès Restreint est présent, on stocke 
+            // les identifiants des auteurs fraichement synchronisés associés
+            // à une/des zone(s) définie lors de la configuration de Galettonuts
+            if ($zones = $config->lire('zones'))
+            {
+                $ids[$id_auteur] = $zones;
+                unset($zones);
+            }
+            
         } // while
         
-        // La synchronisation est complète, on le saugarde
+        // La synchronisation est complète, on le sauvegarde
         $synchro->ajouter(array('maj' => $maintenant), true);
+        
+        // Association de zones aux auteurs synchronisés
+        if (0 < count($ids))
+        {
+            galettonuts_associer_zones($ids);
+        }
         
         return $compteur;
     }
@@ -209,6 +228,30 @@ function galettonuts_galette_db()
     }
     
     return $link;
+}
+
+/**
+ * Associer des zones aux auteurs.
+ * 
+ * Lorsque le plugin Accès Restreint est activé, il peut être utile
+ * de lier systématiquement les auteurs synchronisés à une ou des zones
+ * existantes.
+ * 
+ * @param  array $ids Tableau associatif id_auteur => array(zone1,zone2,…,zonen).
+ **/
+function galettonuts_associer_zones($ids)
+{
+    spip_log('galettonuts_associer_zones() avec $ids = ');
+    spip_log(var_export($ids, true));
+    foreach ($ids as $id_auteur => $zones)
+    {
+        $id_auteur = (int) $id_auteur;
+        foreach ($zones as $id_zone)
+        {
+            $id_zone = (int) $id_zone;
+            spip_query("INSERT INTO `spip_zones_auteurs` (`id_zone`, `id_auteur`) VALUES ($id_zone, $id_auteur);");
+        }
+    }
 }
 
 /**
