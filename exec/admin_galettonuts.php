@@ -131,6 +131,9 @@ function exec_admin_galettonuts()
         // Interraction avec Accès Restreint
         if (defined('_DIR_PLUGIN_ACCESRESTREINT'))
         {
+            if ($config->existe('zones'))
+                galettonuts_dissocier_zones($config->lire('zones'));
+            
             $zones = _request('zones');
             if (is_array($zones) && 0 < count($zones))
             {
@@ -138,7 +141,6 @@ function exec_admin_galettonuts()
             }
             else
             {
-                galettonuts_dissocier_zones($config->lire('zones'));
                 $config->supprimer(array('zones' => null));
                 unset($contexte['zones']);
             }
