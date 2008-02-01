@@ -19,15 +19,16 @@
 if (!defined('_ECRIRE_INC_VERSION')) return;
 
 /**
- * Synchronise les utilisateurs Galette vers Spip.
+ * Synchroniser les utilisateurs Galette vers Spip.
  * 
- * @return int Le nombre de fiches mis à jour ;
- *             0 lorsqu'une erreur inconnue est survenue ;
- *            -1 si la synchronisation a échouée ;
- *            -2 lorsque des erreurs sont survenues lors de la connexion à la BDD ;
- *           -10 si la synchronisation est inutile.
+ * @param  boolean $forcer Forcer la synchronisation.
+ * @return int     Retourne en cas de réussite le nombre de fiches mis à jour ;
+ *  _ 0 lorsqu'une erreur inconnue est survenue ;
+ *  _ -1 si la synchronisation a échouée ;
+ *  _ -2 lorsque des erreurs sont survenues lors de la connexion à la BDD ;
+ *  _ -10 si la synchronisation est inutile.
  **/
-function galettonuts_synchroniser()
+function galettonuts_synchroniser($forcer = false)
 {
 
     // Lecture de la configuration
@@ -52,7 +53,7 @@ function galettonuts_synchroniser()
     $synchro = new L2_Spip_Plugin_Metas('galettonuts_synchro');
     
     // La synchronisation est inutile.
-    if (!is_null($synchro->lire('maj')) && galettonuts_a_jour($synchro->lire('maj'), $config->lire('prefix_db'), $link))
+    if (!$forcer && !is_null($synchro->lire('maj')) && galettonuts_a_jour($synchro->lire('maj'), $config->lire('prefix_db'), $link))
     {
         return -10;
     }

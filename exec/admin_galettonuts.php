@@ -151,7 +151,7 @@ function exec_admin_galettonuts()
         
         // Lancer une synchronisation
         if (0 == count($erreurs))
-            galettonuts_synchroniser();
+            galettonuts_synchroniser(true);
     }
 
 // }}}
