@@ -84,12 +84,15 @@ function galettonuts_synchroniser($forcer = false)
 
             // Formatage des informations de l'auteur à destination de Spip
             $statut = (1 == $adh['actif']) ? '6forum' : '5poubelle';
-            $login  = charset2unicode($adh['login'], 'iso-8859-15');
-            $email  = charset2unicode($adh['email'], 'iso-8859-15');
-            $nom    = charset2unicode(ucfirst($adh['prenom']) . ' ' . ucfirst($adh['nom']), 'iso-8859-15');
-            $pass   = charset2unicode($adh['pass'], 'iso-8859-15');
-            $mdpass = md5($pass);
+            $login  = unicode2charset(charset2unicode($adh['login'], 'iso-8859-15', 'forcer'));
+            $email  = unicode2charset(charset2unicode($adh['email'], 'iso-8859-15', 'forcer'));
+            $nom    = unicode2charset(charset2unicode(ucfirst($adh['prenom']) . ' ' . ucfirst($adh['nom']), 'iso-8859-15', 'forcer'));
+            
+            $alea_actuel = creer_uniqid();
+            $alea_futur  = creer_uniqid();
+            $pass   = $adh['pass'];
             $htpass = generer_htpass($pass);
+            $mdpass = md5($alea_actuel . $pass);
 
             // Récupération de l'identifiant de l'auteur Spip, s'il existe
             $res2 = spip_query("SELECT `id_auteur` FROM `spip_galettonuts` WHERE `id_adh` = '{$adh['id']}';");
@@ -107,6 +110,8 @@ function galettonuts_synchroniser($forcer = false)
                       . ", `login` = " . _q($login)
                       . ", `pass` = "  . _q($mdpass)
                       . ", `htpass` = ". _q($htpass)
+                      . ", `alea_actuel` = ". _q($alea_actuel)
+                      . ", `alea_futur` = ". _q($alea_futur)
                       . ", `statut` = ". _q($statut)
                       . ", `maj` = NOW()"
                       . " WHERE `id_auteur` = " . _q($id_auteur);
@@ -116,14 +121,15 @@ function galettonuts_synchroniser($forcer = false)
             // Création de l'auteur Spip
             else
             {
-                $req = "INSERT INTO `spip_auteurs` (`nom`, `email`, `login`, `pass`, `htpass`, `alea_futur`, `statut`) "
+                $req = "INSERT INTO `spip_auteurs` (`nom`, `email`, `login`, `pass`, `htpass`, `alea_actuel`, `alea_futur`, `statut`) "
                      . "VALUES ("
                      . _q($nom)     . ', '
                      . _q($email)   . ', '
                      . _q($login)   . ', '
                      . _q($mdpass)  . ', '
                      . _q($htpass)  . ', '
-                     . "FLOOR(32000*RAND()), "
+                     . _q($alea_actuel) . ', '
+                     . _q($alea_futur)  . ', '
                      . _q($statut)
                      . ");";
                 spip_query($req);
