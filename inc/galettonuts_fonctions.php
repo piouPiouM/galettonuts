@@ -109,7 +109,7 @@ function galettonuts_synchroniser($forcer = false)
             // Récupération de l'identifiant de l'auteur Spip, s'il existe
             $res2 = spip_query("SELECT `id_auteur` FROM `spip_galettonuts` WHERE `id_adh` = '{$adh['id']}';");
             if (spip_mysql_count($res2))
-                $id_auteur = (int) mysql_result($res2, 0);
+                $id_auteur = (int) @mysql_result($res2, 0);
             else
                 $id_auteur = null;
 
@@ -149,7 +149,7 @@ function galettonuts_synchroniser($forcer = false)
                 
                 // Puisque la colonne id_auteur de la table spip_auteurs est
                 // de type BIGINT, on ne peut utiliser mysql_insert_id() de PHP.
-                $id_auteur = mysql_result(spip_query("SELECT LAST_INSERT_ID();"), 0);
+                $id_auteur = @mysql_result(spip_query("SELECT LAST_INSERT_ID();"), 0);
 
                 $req = "INSERT INTO `spip_galettonuts` (`id_auteur`, `id_adh`) VALUES (" . _q($id_auteur) . ', ' . _q($adh['id']) . ');';
                 spip_query($req);
@@ -194,8 +194,8 @@ function galettonuts_synchroniser($forcer = false)
  **/
 function galettonuts_a_jour($derniere_maj, $prefix_db, $link)
 {
-    $res = mysql_query("SHOW TABLE STATUS LIKE '" . $prefix_db . "adherents';", $link);
-    $maj = mysql_result($res, 0, 'Update_time');
+    $res = @mysql_query("SHOW TABLE STATUS LIKE '" . $prefix_db . "adherents';", $link);
+    $maj = @mysql_result($res, 0, 'Update_time');
     return (bool) ($derniere_maj >= MySQLtoTimestamp($maj));
 }
 
@@ -329,12 +329,12 @@ function MySQLtoTimestamp($mysqlDate)
         list($year, $month, $day_time) = explode('-', $mysqlDate);
         list($day, $time) = explode(" ", $day_time);
         list($hour, $minute, $second) = explode(":", $time);
-        $ts = mktime($hour, $minute, $second, $month, $day, $year);
+        $ts = mktime((int) $hour, (int) $minute, (int) $second, (int) $month, (int) $day, (int) $year);
     }
     else
     {
         list($year, $month, $day) = explode('-', $mysqlDate);
-        $ts = mktime(0, 0, 0, $month, $day, $year);
+        $ts = mktime(0, 0, 0, (int) $month, (int) $day, (int) $year);
     }
     return $ts;
 }
