@@ -3,26 +3,24 @@
 		GalettOnuts
 	</nom>
 	<auteur>
-		[Mehdi Kabab->http://my.ziki.com/pioupioum] &copy; 2008 - Distribué sous licence GNU/GPL
+		[Mehdi Kabab->http://pioupioum.tuxfamily.org/] &copy; 2008 - Distribu&eacute; sous licence GNU/GPL.
 	</auteur>
 	<version>
 		0.1
 	</version>
 	<etat>
-		dev
+		test
 	</etat>
 	<description>
-		<multi>
-			[fr] Ce plugin permet de synchroniser les utilisateurs de [Galette->http://galette.tuxfamily.org/] avec Spip. Tout nouvel adhérent ou toute modification d'un adhérent de votre installation Galette sont répercutés dans Spip.<br />
-Aussi, si le plugin <em>Accès Restreint</em> est actif, le plugin vous proposera de lier automatiquement les adhérents à une, voire plusieurs zones.
+		Ce plugin permet de synchroniser les utilisateurs de [Galette->http://galette.tuxfamily.org/] avec Spip. Tout nouvel adh&eacute;rent ou toute modification d&#x27;un adh&eacute;rent de votre installation Galette sont r&eacute;percut&eacute;s dans Spip.<br />
+Aussi, si le plugin <em>Acc&egrave;s Restreint</em> est actif, le plugin vous proposera de lier automatiquement les adh&eacute;rents &agrave; une, voire plusieurs zones.
 
-[Acc&egrave;s &agrave; la configuration->.?exec=admin_galettonuts]
+[Acc&eacute;der &agrave; la configuration->.?exec=admin_galettonuts]
 
-<strong>Important&nbsp;:</strong> La déinstallation du plugin entraine la suppression pure et simple des auteurs qu'il aurait créé.
-		</multi>
+<strong>Important&nbsp;:</strong> La d&eacute;installation du plugin entraine la suppression pure et simple des auteurs qu&#x27;il aurait cr&eacute;&eacute;.
 	</description>
 	<lien>
-		Documentation à venir
+		[Documentation->http://pioupioum.tuxfamily.org/scripts/spip/galettonuts]
 	</lien>
 	<icon>
 		img_pack/galettonuts-128.png
@@ -41,5 +39,4 @@ Aussi, si le plugin <em>Accès Restreint</em> est actif, le plugin vous proposer
 		<nom>taches_generales_cron</nom>
 		<inclure>galettonuts_pipelines.php</inclure>
 	</pipeline>
-	<chemin dir="./ecrire/" />
 </plugin>
