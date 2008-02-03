@@ -26,6 +26,7 @@
  * @copyright Copyright (C) 2008 Mehdi Kabab
  * @license   http://www.gnu.org/licenses/gpl2.html  GPL Licence 2.0
  * @version   0.1
+ * @link      http://pioupioum.tuxfamily.org/scripts/spip/galettonuts
  */
 
 if (!defined('_ECRIRE_INC_VERSION')) return;
@@ -320,7 +321,7 @@ function galettonuts_dissocier_zones($zones)
  * @param  string $mysqlDate Date MySQL à convertir (format Y-m-d G:i:s).
  * @return int
  * @author Tiago Valdo
- * @see http://www.php.net/manual/fr/function.mktime.php#80470
+ * @link   http://www.php.net/manual/fr/function.mktime.php#80470
  **/
 function MySQLtoTimestamp($mysqlDate)
 {

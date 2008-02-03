@@ -26,6 +26,7 @@
  * @copyright Copyright (C) 2008 Mehdi Kabab
  * @license   http://www.gnu.org/licenses/gpl2.html  GPL Licence 2.0
  * @version   0.1
+ * @link      http://pioupioum.tuxfamily.org/scripts/spip/galettonuts
  */
 
 $GLOBALS[$GLOBALS['idx_lang']] = array(
