@@ -33,6 +33,9 @@ Aussi, si le plugin <em>Acc&egrave;s Restreint</em> est actif, le plugin vous pr
 	<install>
 		base/galettonuts_upgrade.php
 	</install>
+	<options>
+		galettonuts_options.php
+	</options>
 	<pipeline>
 		<nom>affiche_milieu</nom>
 		<inclure>galettonuts_pipelines.php</inclure>
