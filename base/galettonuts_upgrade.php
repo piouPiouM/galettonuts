@@ -31,18 +31,25 @@
 
 if (!defined('_ECRIRE_INC_VERSION')) return;
 
-$GLOBALS['galettonuts_version'] = 0.1;
+/**
+ * Retourner le numéro de version du plugin.
+ * 
+ * @return string
+ **/
+function galettonuts_version()
+{
+    return '0.1';
+}
 
 function galettonuts_upgrade()
 {
-    $version_base      = $GLOBALS['galettonuts_version'];
     $version_installee = (isset($GLOBALS['meta']['galettonuts_version']) ? $GLOBALS['meta']['galettonuts_version'] : '0.0');
-    
-    // Si la version installée est la dernière en date
-    if ($version_base == $version_installee)
+
+    // La version installée est la dernière en date
+    if ($version_installee == galettonuts_version())
         return;
-    
-    // Sinon s'il s'agit d'une nouvelle installation
+
+    // Nouvelle installation
     else if (version_compare($version_installee, '0.0', 'eq'))
     {
         include_spip('base/galettonuts_tables');
@@ -50,17 +57,17 @@ function galettonuts_upgrade()
         include_spip('base/abstract_sql');
         creer_base();
         
-        ecrire_meta('galettonuts_version', $version_base);
+        ecrire_meta('galettonuts_version', galettonuts_version());
         ecrire_meta('galettonuts_config', serialize(array(
             'adresse_db'    => 'localhost',
             'prefix_db'     => 'galette_',
             'db_ok'         => false,
             'activer_cron'  => true,
             'heures'        => 0,
-            'minutes'       => 10
+            'minutes'       => 30
         )));
         ecrire_meta('galettonuts_synchro', serialize(array(
-            'frequence'     => 600
+            'frequence' => 600
         )));
         ecrire_metas();
         
@@ -72,16 +79,17 @@ function galettonuts_upgrade()
         
         return;
     }
-    
-    $version_comparaison = version_compare($version_base, $version_installee);
-    
-    // S'il s'agit d'une mise à jour
+
+    $version_comparaison = version_compare(galettonuts_version(), $version_installee);
+
+    // Mise à jour
     if (-1 == $version_comparaison)
     {
         // TODO: Gérer un Upgrade
+        ecrire_meta('galettonuts_version', galettonuts_version());
         return;
     }
-    // Ou si on est en situation d'une régression
+    // Régression
     else if (1 == $version_comparaison)
     {
         // TODO: Gérer un Downgrade
@@ -96,7 +104,7 @@ function galettonuts_vider_tables()
     {
         spip_query("DELETE FROM `spip_auteurs` WHERE `spip_auteurs`.`id_auteur`={$row['id_auteur']};");
     }
-    
+
     if (isset($GLOBALS['meta']['galettonuts_config']))
     {
         $config = unserialize($GLOBALS['meta']['galettonuts_config']);
@@ -107,8 +115,8 @@ function galettonuts_vider_tables()
         }
         unset($config);
     }
-    
-    spip_query("DROP TABLE IF EXISTS spip_galettonuts");
+
+    spip_query('DROP TABLE IF EXISTS spip_galettonuts');
     effacer_meta('galettonuts_version');
     effacer_meta('galettonuts_config');
     effacer_meta('galettonuts_synchro');
@@ -124,13 +132,13 @@ function galettonuts_install($action)
     switch ($action)
     {
         case 'test':
-            return (isset($GLOBALS['meta']['galettonuts_version']) AND ($GLOBALS['galettonuts_version'] <= $GLOBALS['meta']['galettonuts_version']));
-        break;
+            return (isset($GLOBALS['meta']['galettonuts_version']) && (galettonuts_version() <= $GLOBALS['meta']['galettonuts_version']));
+            break;
         case 'install':
             galettonuts_upgrade();
-        break;
+            break;
         case 'uninstall':
             galettonuts_vider_tables();
-        break;
+            break;
     }
 }
