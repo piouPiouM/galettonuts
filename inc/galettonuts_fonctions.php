@@ -96,7 +96,6 @@ function galettonuts_synchroniser($forcer = false)
             include_spip('inc/charsets');
 
             // Formatage des informations de l'auteur à destination de Spip
-            $statut = (1 == $adh['actif']) ? '6forum' : '5poubelle';
             $login  = unicode2charset(charset2unicode($adh['login'], 'iso-8859-15', 'forcer'));
             $email  = unicode2charset(charset2unicode($adh['email'], 'iso-8859-15', 'forcer'));
             $nom    = unicode2charset(charset2unicode(ucfirst($adh['prenom']) . ' ' . ucfirst($adh['nom']), 'iso-8859-15', 'forcer'));
@@ -124,9 +123,14 @@ function galettonuts_synchroniser($forcer = false)
                       . ", `pass` = "  . _q($mdpass)
                       . ", `htpass` = ". _q($htpass)
                       . ", `alea_actuel` = ". _q($alea_actuel)
-                      . ", `alea_futur` = ". _q($alea_futur)
-                      . ", `statut` = ". _q($statut)
-                      . ", `maj` = NOW()"
+                      . ", `alea_futur` = ". _q($alea_futur);
+
+                if (1 != $adh['actif'])
+                {
+                    $req .= ", `statut` = ". _q('5poubelle');
+                }
+
+                $req .= ", `maj` = NOW()"
                       . " WHERE `id_auteur` = " . _q($id_auteur);
                 spip_query($req);
             }
@@ -134,6 +138,7 @@ function galettonuts_synchroniser($forcer = false)
             // Création de l'auteur Spip
             else
             {
+                $statut = (1 == $adh['actif']) ? '6forum' : '5poubelle';
                 $req = "INSERT INTO `spip_auteurs` (`nom`, `email`, `login`, `pass`, `htpass`, `alea_actuel`, `alea_futur`, `statut`) "
                      . "VALUES ("
                      . _q($nom)     . ', '
